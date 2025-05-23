@@ -1,0 +1,73 @@
+mongosh.exe "mongodb+srv://vedruna.ew3gzcd.mongodb.net/testRelampago" --apiVersion 1 --username alumnos
+Password: alumnos12345678
+{
+    _id: ObjectId("63d6c9b038af9837a8a81262"),
+    address: {
+      building: '522',
+      coord: [ -73.95171, 40.767461 ],
+      street: 'East   74 Street',
+      zipcode: '10021'
+    },
+    borough: 'Manhattan',
+    cuisine: 'American ',
+    grades: [
+      {
+        date: ISODate("2014-09-02T00:00:00.000Z"),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate("2013-12-19T00:00:00.000Z"),
+        grade: 'B',
+        score: 16
+      },
+      {
+        date: ISODate("2013-05-28T00:00:00.000Z"),
+        grade: 'A',
+        score: 9
+      },
+      {
+        date: ISODate("2012-12-07T00:00:00.000Z"),
+        grade: 'A',
+        score: 13
+      },
+      {
+        date: ISODate("2012-03-29T00:00:00.000Z"),
+        grade: 'A',
+        score: 11
+      }
+    ],
+    name: 'Glorious Food',
+    restaurant_id: '40361521'
+  }
+
+
+-- 1. Show the fields: restaurant ID, name, borough, and zip code, but exclude the _id field for all documents in the restaurants collection.
+db.restaurants.find({}, {restaurant_id: 1, name: 1, borough: 1, "address.zipcode": 1, _id: 0});
+
+-- 2. Show the restaurants that do not serve 'American' cuisine, have a score higher than 70, and have a latitude less than -65.754168.
+db.restaurants.find({
+  $and: [
+    { cuisine: { $ne: 'American' } },
+    { "grades.score": { $gt: 70 } },
+    { "address.coord.0": { $lt: -65.754168 } }
+  ]
+});
+
+-- 3. Show the restaurant ID, name, borough, and cuisine type for restaurants whose name starts with the letters 'Wil'.
+db.restaurants.find(
+  { name: { $regex: /^Wil/ } },
+  { _id: 1, name: 1, borough: 1, cuisine: 1 }
+);
+
+
+-- 4. Show the name of all restaurants in ascending order, along with all columns.
+cursor = db.restaurants.find().sort({ name: 1 });
+
+-- 5. Show the restaurant name, borough, coordinates (longitude and latitude), and cuisine for restaurants that contain the substring 'mon' anywhere in their name.
+db.restaurants.find(
+  { name: { $regex: /mon/ } },
+  { name: 1, borough: 1, "address.coord": 1, cuisine: 1 }
+);
+
+

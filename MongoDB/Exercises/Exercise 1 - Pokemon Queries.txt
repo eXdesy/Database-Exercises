@@ -1,0 +1,23 @@
+"mongodb+srv://vedruna.ew3gzcd.mongodb.net/vedruna" --apiVersion 1 --username alumnos
+Password : alumnos12345678
+
+1. Print all the Pokemon names to the MongoDB console like so: “name:  <name_of_pokemon>”.
+db.pokemons.find().forEach( function(pokemon) {print ("name: " + pokemon.name); } );
+
+2. Find the Pokemon with the name "Mew".
+db.pokemons.find({name: "Mew"});
+
+3. How many Pokemons are 87.5 male?
+db.pokemons.find({"misc.sex.male":87.5}).count()
+
+4. How many Pokemons have ice : "2"?
+db.pokemons.find({"damages.ice": "2"}).count()
+
+5. How many Pokemons have ice : "2" AND female : "12.5"?
+db.pokemons.find({$and: [{"damages.ice": "2"}, {"misc.sex.female":"12.5"}]}).count()
+
+6. How many Pokemons have "speed": "60" OR "type" : "Grass"?
+db.pokemons.find({$or: [{"stats.speed": "60"}, {"type":"Grass"}]}).count()
+
+7. How many have BOTH "speed": "60" AND "type" : "Grass"?
+db.pokemons.find({$and: [{"stats.speed": "60"}, {"type":"Grass"}]}).count()
